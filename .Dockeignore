@@ -1,0 +1,27 @@
+# Java/Maven specific
+target/               # Maven build outputs
+*.jar                 # Compiled JAR files
+*.war                 # Web application archives
+*.ear                 # Enterprise archives
+*.class               # Individual class files
+
+# Build system
+.mvn/                 # Maven wrapper files
+mvnw                  # Maven wrapper script
+mvnw.cmd
+
+# IDE files
+.idea/                # IntelliJ config
+*.iml                 # IntelliJ module files
+*.project             # Eclipse project files
+*.settings/           # Eclipse settings
+.vscode/              # VS Code config
+
+# Logs and temp files
+*.log                 # Application logs
+*.tmp                 # Temporary files
+*.swp                 # Vim swap files
+
+# Environment files
+.env                  # Local environment variables
+.env.local            # Override environment variables

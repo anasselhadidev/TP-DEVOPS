@@ -1,0 +1,13 @@
+# Development-specific Dockerfile
+FROM maven:3.9.6-eclipse-temurin-17
+
+WORKDIR /app
+# Only copy POM for dependency caching
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
+
+# Install curl for healthchecks
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+# Set default command for live reload
+CMD ["mvn", "spring-boot:run"]
