@@ -65,8 +65,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
                         
                         // Définit un nom unique pour l'image avec le numéro du build
-                        def imageName = "anasselhadi850/TP-DevOps:${env.BUILD_NUMBER}"
-                        
+                        def imageName = "anasselhadi850/tp-devops:${env.BUILD_NUMBER}"                        
                         echo "Construction de l'image Docker : ${imageName}"
                         // Construit l'image en utilisant le 'Dockerfile' à la racine du projet
                         sh "docker build -t ${imageName} ."
