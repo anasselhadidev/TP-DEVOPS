@@ -38,13 +38,11 @@ pipeline {
         // Étape 4: Générer le package .war [cite: 26]
         stage('4. Package Application') {
             steps {
-                echo 'Création du package .war...'
-                // La commande 'mvn package' crée le fichier .war dans le dossier 'target'
+                echo 'Création du package...' // On peut enlever la mention .war
                 sh 'mvn package'
 
-                // On archive l'artefact pour pouvoir le réutiliser plus tard (ex: déploiement)
-                echo 'Archivage du .war...'
-                archiveArtifacts artifacts: 'target/*.war', fingerprint: true
+                echo 'Archivage du .jar...'
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true // <-- Changez .war en .jar ici
             }
         }
 
