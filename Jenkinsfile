@@ -50,8 +50,12 @@ pipeline {
         // Cette étape est préparée pour la suite du TP.
         stage('5. SonarQube Analysis') {
             steps {
-                echo 'Cette étape est réservée pour l\'analyse SonarQube.'
-                // Le code pour SonarQube sera ajouté ici à l'étape 3 du TP.
+                // Cette section configure l'environnement avec les infos du serveur SonarQube
+                // que vous avez configuré dans "Configure System".
+                withSonarQubeEnv('MySonarQubeServer') {
+                    // La commande Maven qui lance l'analyse et envoie les résultats à SonarQube
+                    sh 'mvn sonar:sonar'
+                }
             }
         }
     }
