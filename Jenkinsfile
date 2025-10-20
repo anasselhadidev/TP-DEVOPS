@@ -58,6 +58,30 @@ pipeline {
                 }
             }
         }
+        stage('6. Build & Push Docker Image') {
+            steps {
+                script {
+                    // Utilise les identifiants stockés dans Jenkins
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        
+                        // Définit un nom unique pour l'image avec le numéro du build
+                        def imageName = "anasselhadi850/TP-DevOps:${env.BUILD_NUMBER}"
+                        
+                        echo "Construction de l'image Docker : ${imageName}"
+                        // Construit l'image en utilisant le 'Dockerfile' à la racine du projet
+                        sh "docker build -t ${imageName} ."
+
+                        echo "Connexion à Docker Hub..."
+                        // Se connecte à Docker Hub en utilisant les credentials
+                        sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
+                        
+                        echo "Push de l'image vers Docker Hub..."
+                        // Pousse l'image vers le registre Docker Hub 
+                        sh "docker push ${imageName}"
+                    }
+                }
+            }
+        }
     }
 
     post {
