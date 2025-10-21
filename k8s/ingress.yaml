@@ -1,11 +1,12 @@
+# k8s/ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: tp-devops-ingress
-  annotations:
-    # CORRECTION IMPORTANTE : Utilisez cette annotation pour "web_application_routing"
-    kubernetes.io/ingress.class: "webapprouting.kubernetes.azure.com"
+  # Il n'y a plus besoin d'annotations pour ce cas
 spec:
+  # ✅ CORRECT : C'est un champ de la spécification ('spec')
+  ingressClassName: "webapprouting.kubernetes.azure.com"
   rules:
   - http:
       paths:

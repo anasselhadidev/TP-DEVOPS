@@ -1,0 +1,35 @@
+# postgres-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:13
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: "appdb"
+        - name: POSTGRES_USER
+          value: "appuser"
+        - name: POSTGRES_PASSWORD
+          value: "apppass"
+        
+        # --- AJOUTEZ CETTE SECTION ---
+        readinessProbe:
+          exec:
+            command: ["pg_isready", "-U", "appuser", "-d", "appdb"]
+          initialDelaySeconds: 5  # Attendre 5 secondes avant la première vérification
+          periodSeconds: 5        # Vérifier toutes les 5 secondes
+        # --- FIN DE LA SECTION À AJOUTER ---

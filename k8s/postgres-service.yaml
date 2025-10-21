@@ -1,0 +1,14 @@
+# postgres-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  # CE NOM EST CRUCIAL ! C'est celui que votre application cherche.
+  name: postgres-db 
+spec:
+  selector:
+    app: postgres # Cible les pods avec le label "app: postgres"
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  type: ClusterIP # Uniquement accessible à l'intérieur du cluster
