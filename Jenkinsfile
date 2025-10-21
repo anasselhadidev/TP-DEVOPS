@@ -60,23 +60,22 @@ pipeline {
         }
         stage('6. Build & Push Docker Image') {
             steps {
+                // Dans votre stage '6. Build & Push Docker Image'
                 script {
-                    // Utilise les identifiants stockés dans Jenkins
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                        
-                        // Définit un nom unique pour l'image avec le numéro du build
-                        def imageName = "anasselhadi850/tp-devops:${env.BUILD_NUMBER}"                        
-                        echo "Construction de l'image Docker : ${imageName}"
-                        // Construit l'image en utilisant le 'Dockerfile' à la racine du projet
-                        sh "docker build -t ${imageName} ."
+                    withCredentials(...) {
+                        def imageNameWithBuildNumber = "anasselhadi850/tp-devops:${env.BUILD_NUMBER}"
+                        def imageNameLatest = "anasselhadi850/tp-devops:latest" // On définit aussi le tag latest
 
-                        echo "Connexion à Docker Hub..."
-                        // Se connecte à Docker Hub en utilisant les credentials
-                        sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
-                        
-                        echo "Push de l'image vers Docker Hub..."
-                        // Pousse l'image vers le registre Docker Hub 
-                        sh "docker push ${imageName}"
+                        echo "Construction de l'image Docker..."
+                        sh "docker build -t ${imageNameWithBuildNumber} -t ${imageNameLatest} ." // On build avec les DEUX tags
+
+                        // ... login ...
+
+                        echo "Push de l'image avec le numéro de build..."
+                        sh "docker push ${imageNameWithBuildNumber}"
+
+                        echo "Push de l'image avec le tag 'latest'..."
+                        sh "docker push ${imageNameLatest}" // On pousse aussi le tag 'latest'
                     }
                 }
             }
