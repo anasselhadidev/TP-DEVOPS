@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tp-devops-ingress
+  annotations:
+    # CORRECTION IMPORTANTE : Utilisez cette annotation pour "web_application_routing"
+    kubernetes.io/ingress.class: "webapprouting.kubernetes.azure.com"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: tp-devops-service
+            port:
+              number: 80
