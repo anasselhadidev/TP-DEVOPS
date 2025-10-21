@@ -23,7 +23,10 @@ import org.springframework.web.server.ResponseStatusException;
 public class AuthController {
 
     private final AuthService authService;
-
+    @GetMapping("/") // ✅ Cette méthode répondra aux requêtes sur la page d'accueil
+    public String home() {
+        return "Bienvenue sur l'API Infinitum-Art ! Le déploiement est réussi.";
+    }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest authRequest, HttpServletResponse response) {
         // Input validation - let global handler catch IllegalArgumentException
