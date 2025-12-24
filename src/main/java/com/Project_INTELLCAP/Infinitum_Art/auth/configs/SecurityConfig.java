@@ -18,8 +18,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.util.List;
-
 @Configuration
 @EnableMethodSecurity
 @RequiredArgsConstructor
@@ -27,14 +25,12 @@ public class SecurityConfig {
 
     private final MyUserDetailsService myUserDetailsService;
     private final JwtFilter jwtFilter;
-    private final PasswordEncoder passwordEncoder;  // Injected from PasswordEncoderConfig
-    private final List<String> publicEndpoints;
-
+    private final PasswordEncoder passwordEncoder;
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(passwordEncoder);  // Use injected encoder
+        provider.setPasswordEncoder(passwordEncoder);
         provider.setUserDetailsService(myUserDetailsService);
         return provider;
     }
@@ -44,7 +40,9 @@ public class SecurityConfig {
         return http
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers(publicEndpoints.toArray(new String[0])).permitAll()
+                        // ✅ CORRECTION : Rend tous les endpoints sous /api/auth/ publics
+                        .requestMatchers("/api/auth/**").permitAll()
+                        // Toutes les autres requêtes nécessitent une authentification
                         .anyRequest().authenticated())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

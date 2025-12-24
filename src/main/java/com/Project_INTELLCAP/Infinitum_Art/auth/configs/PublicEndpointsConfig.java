@@ -10,6 +10,7 @@ public class PublicEndpointsConfig {
     @Bean
     public List<String> publicEndpoints() {
         return List.of(
+                "/",
                 "/api/auth/login",
                 "/api/auth/register",
                 "/api/auth/request-password-reset",
